@@ -17,6 +17,7 @@ import { getProducts } from "../../application/usecases/getProducts";
 import { useNavigation } from "@react-navigation/native";
 
 export default function ProductListScreen() {
+  const navigation = useNavigation<any>();
   const pageSize = 20;
 
   const [products, setProducts] = useState<ProductEntity[]>([]);
@@ -25,7 +26,7 @@ export default function ProductListScreen() {
   const [error, setError] = useState("");
   const [page, setPage] = useState(0); // Track the current page for pagination
   const [onEndReachLoader, setOnEndReachLoader] = useState(false); // Track loading state for onEndReached
-  
+
   const isLoadingMore = useRef(false);
 
   const fetchProducts = async () => {
@@ -46,18 +47,23 @@ export default function ProductListScreen() {
     fetchProducts();
   }, []);
 
-  // Display each product using the ProductCard component
- const renderItems = (
-    { item }: { item: ProductEntity }, // Render each product using ProductCard
+ 
+  const renderItems = (
+    { item }: { item: ProductEntity }, 
   ) => (
+    // Navigate to ProductDetail screen with productId
     <ProductCard
       product={item}
-   
+      onPress={() =>
+        navigation.navigate("ProductDetail", {
+          
+          productId: item.id,
+        })
+      }
     />
   );
 
-
-const onSearch = (query: string) => {
+  const onSearch = (query: string) => {
     setSearchQuery(query);
     const abortController = new AbortController(); // Create an AbortController instance
     const timeout = setTimeout(async () => {
@@ -91,7 +97,7 @@ const onSearch = (query: string) => {
       setError("Failed to load more products. Please try again later.");
     } finally {
       setOnEndReachLoader(false); // Reset loading state for onEndReached
-      isLoadingMore.current = false; //stops loading until end of reach is reached again
+      isLoadingMore.current = false; 
     }
   };
   return (
