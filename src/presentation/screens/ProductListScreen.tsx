@@ -7,13 +7,14 @@ import {
   StyleSheet,
 } from "react-native";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { ScreenHeader } from "../components/ScreenHeader";
 import { ProductCard } from "../components/ProductCard";
 import { SearchBar } from "../components/SearchBar";
 import { searchProducts } from "../../application/usecases/searchProducts";
 import { ProductEntity } from "../../domain/entities/ProductEntity";
 import { getProducts } from "../../application/usecases/getProducts";
+import { useNavigation } from "@react-navigation/native";
 
 export default function ProductListScreen() {
   const pageSize = 20;
@@ -23,6 +24,9 @@ export default function ProductListScreen() {
   const [loading, setLoading] = useState(true); //initial loading state
   const [error, setError] = useState("");
   const [page, setPage] = useState(0); // Track the current page for pagination
+  const [onEndReachLoader, setOnEndReachLoader] = useState(false); // Track loading state for onEndReached
+  
+  const isLoadingMore = useRef(false);
 
   const fetchProducts = async () => {
     setLoading(true); //retry loading state
@@ -43,9 +47,16 @@ export default function ProductListScreen() {
   }, []);
 
   // Display each product using the ProductCard component
-  const renderItems = ({ item }: { item: ProductEntity }) => (
-    <ProductCard product={item} />
+ const renderItems = (
+    { item }: { item: ProductEntity }, // Render each product using ProductCard
+  ) => (
+    <ProductCard
+      product={item}
+   
+    />
   );
+
+
 const onSearch = (query: string) => {
     setSearchQuery(query);
     const abortController = new AbortController(); // Create an AbortController instance
@@ -60,10 +71,35 @@ const onSearch = (query: string) => {
     };
   };
 
+  const loadMoreProducts = async () => {
+    if (isLoadingMore.current) return;
+
+    isLoadingMore.current = true;
+    const nextPage = page + 1;
+    try {
+      setOnEndReachLoader(true); // Set loading state for onEndReached
+      const productData = await getProducts(nextPage * pageSize, pageSize); // Fetch products for the next page
+      setProducts((prevProducts) => {
+        const existingIds = new Set(prevProducts.map((product) => product.id));
+        const newProducts = productData.products.filter(
+          (product) => !existingIds.has(product.id),
+        );
+        return [...prevProducts, ...newProducts];
+      });
+      setPage(nextPage); // Increment the page number after a successful request
+    } catch (error) {
+      setError("Failed to load more products. Please try again later.");
+    } finally {
+      setOnEndReachLoader(false); // Reset loading state for onEndReached
+      isLoadingMore.current = false; //stops loading until end of reach is reached again
+    }
+  };
   return (
     <View style={styles.container}>
       <ScreenHeader title="Product Catalogue" />
-<SearchBar value={searchQuery} onChangeText={onSearch} />
+
+      <SearchBar value={searchQuery} onChangeText={onSearch} />
+
       {loading ? (
         <ActivityIndicator size="small" color="#0000ff" />
       ) : error ? (
@@ -71,11 +107,20 @@ const onSearch = (query: string) => {
           <Text>{error}</Text>
           <Button title="Retry" onPress={fetchProducts} />
         </View>
+      ) : products.length === 0 ? ( // Check if products array is empty
+        <Text>No products found.</Text>
       ) : (
         <FlatList
           data={products}
           renderItem={renderItems}
           keyExtractor={(item) => item.id.toString()}
+          onEndReached={loadMoreProducts} // Load more products when scrolled to the end
+          onEndReachedThreshold={0.8} // Trigger onEndReached when 80% of the list is visible
+          ListFooterComponent={
+            onEndReachLoader ? (
+              <ActivityIndicator size="small" color="#0000ff" />
+            ) : null
+          }
         />
       )}
     </View>
