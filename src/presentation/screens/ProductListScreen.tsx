@@ -1,5 +1,7 @@
 import {
   View,
+  Text,
+  Button,
   FlatList,
   ActivityIndicator,
   StyleSheet,
@@ -13,20 +15,23 @@ import { ProductEntity } from "../../domain/entities/ProductEntity";
 import { getProducts } from "../../application/usecases/getProducts";
 
 export default function ProductListScreen() {
- 
   const pageSize = 20;
 
   const [products, setProducts] = useState<ProductEntity[]>([]);
+  const [loading, setLoading] = useState(true); //initial loading state
+  const [error, setError] = useState("");
+  const [page, setPage] = useState(0); // Track the current page for pagination
 
-  const [loading, setLoading] = useState(true);
-const [page, setPage] = useState(0); // Track the current page for pagination
-  // Retrieve products from the API
   const fetchProducts = async () => {
-    setLoading(true);
+    setLoading(true); //retry loading state
+    setError(""); //clear previous error
 
-    const productData = await getProducts(page * pageSize, pageSize); // Fetch products for the current page
-    setProducts(productData.products);
-
+    try {
+      const productData = await getProducts(page * pageSize, pageSize); // Fetch products for the current page
+      setProducts(productData.products);
+    } catch (error) {
+      setError("Failed to load products. Please try again later.");
+    }
     setLoading(false);
   };
 
@@ -46,6 +51,11 @@ const [page, setPage] = useState(0); // Track the current page for pagination
 
       {loading ? (
         <ActivityIndicator size="small" color="#0000ff" />
+      ) : error ? (
+        <View>
+          <Text>{error}</Text>
+          <Button title="Retry" onPress={fetchProducts} />
+        </View>
       ) : (
         <FlatList
           data={products}
