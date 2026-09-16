@@ -1,8 +1,8 @@
-Product Catalogue
+**Product Catalogue**
 
 A mobile Product Catalogue application built with React Native, Expo, and TypeScript. The application uses the DummyJSON API to retrieve product data and allows users to browse products, search for products, view product details and reviews, and load additional products while scrolling.
 
-Features
+**Features**
 
 Product list with title, thumbnail, category, rating, and price
 
@@ -28,7 +28,7 @@ Navigation between product list and product detail screens
 
 Reusable UI components
 
-Tech Stack
+**Tech Stack**
 
 React Native
 
@@ -42,7 +42,7 @@ React Navigation
 
 DummyJSON API
 
-API
+**API**
 
 The application uses the free DummyJSON API.
 
@@ -54,11 +54,11 @@ For pagination, limit controls the number of products retrieved in each request 
 
 For search, I chose the DummyJSON search endpoint rather than filtering only the products already loaded on the device. A short debounce is used before sending the search request.
 
-Clean Architecture
+**Clean Architecture**
 
 I chose a Clean Architecture-inspired approach to separate responsibilities and keep the project organized and maintainable.
 
-Domain Layer
+**Domain Layer**
 
 The domain layer contains the core data structures:
 
@@ -68,8 +68,8 @@ ReviewEntity.ts defines the product review structure and types.
 
 These entities provide TypeScript type safety throughout the application.
 
-Application Layer
-
+**Application Layer
+**
 The application layer contains the product-related use cases:
 
 getProducts.ts retrieves products and supports pagination.
@@ -78,13 +78,13 @@ getProductById.ts retrieves a selected product by ID.
 
 searchProducts.ts retrieves products matching a search query.
 
-Infrastructure Layer
+**Infrastructure Layer**
 
 The infrastructure layer contains the technical configuration used to communicate with the external API.
 
 axiosClient.ts creates a reusable Axios instance with the DummyJSON base URL and request timeout.
 
-Presentation Layer
+**Presentation Layer**
 
 The presentation layer contains the screens and reusable components that the user interacts with.
 
@@ -104,11 +104,11 @@ ScreenHeader.tsx
 
 This layer displays product data and handles user interactions such as navigation, search, pagination, loading, retry, and pull-to-refresh.
 
-Architectural Decision
+**Architectural Decision**
 
 I chose this structure to separate UI concerns, application operations, domain data structures, and API configuration. Each layer has a clear responsibility, which makes the project easier to understand and maintain.
 
-Project Structure
+**Project Structure**
 
 src/
 ├── application/
@@ -134,21 +134,21 @@ src/
 └── navigation/
     └── AppNavigator.tsx
 
-How to Run the App
+**How to Run the App**
 
-Prerequisites
+**Prerequisites**
 
 Make sure Node.js and npm are installed. For Android, use an Android emulator or connected Android device.
 
-1. Install dependencies
+**1. Install dependencies**
 
 npm install
 
-2. Start Expo
+**2. Start Expo**
 
 npx expo start
 
-3. Run on Android
+**3. Run on Android**
 
 npm run android
 
@@ -156,7 +156,7 @@ or:
 
 npx expo run:android
 
-Known Limitations / TODOs
+**Known Limitations / TODOs**
 
 The following bonus items are not currently implemented:
 
@@ -166,7 +166,7 @@ Unit tests
 
 Further UI/UX improvements could be added with additional development time.
 
-AI Assistance
+**AI Assistance**
 
 AI was used to assist in creating the initial UI mockup for the application.
 
