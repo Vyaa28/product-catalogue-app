@@ -122,6 +122,10 @@ export default function ProductListScreen() {
           keyExtractor={(item) => item.id.toString()}
           onEndReached={loadMoreProducts} // Load more products when scrolled to the end
           onEndReachedThreshold={0.8} // Trigger onEndReached when 80% of the list is visible
+          
+            refreshing={loading} //pull to refresh
+            onRefresh={fetchProducts}
+
           ListFooterComponent={
             onEndReachLoader ? (
               <ActivityIndicator size="small" color="#0000ff" />
