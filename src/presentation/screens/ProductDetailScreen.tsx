@@ -84,74 +84,117 @@ export default function ProductDetailScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#ffffff",
-    padding: 20,
+    backgroundColor: "#f8fafc",
+    paddingHorizontal: 20,
   },
 
   image: {
     width: "100%",
-    height: 280,
+    height: 300,
     resizeMode: "contain",
-    marginBottom: 20,
+    backgroundColor: "#c8c1c1",
+    borderRadius: 20,
+    marginTop: 60,
+    marginBottom: 24,
   },
 
   title: {
     fontSize: 26,
-    fontWeight: "bold",
+    fontWeight: "700",
     color: "#172033",
+    lineHeight: 34,
     marginBottom: 8,
   },
 
   price: {
-    fontSize: 22,
-    fontWeight: "bold",
+    fontSize: 24,
+    fontWeight: "700",
     color: "#4f46e5",
     marginBottom: 8,
   },
 
   rating: {
-    fontSize: 16,
-    color: "#64748b",
-    marginBottom: 20,
+    fontSize: 15,
+    color: "#475569",
+    marginBottom: 10,
   },
 
   sectionTitle: {
-    fontSize: 18,
-    fontWeight: "bold",
-    marginBottom: 8,
+    fontSize: 19,
+    fontWeight: "700",
+    color: "#172033",
+    marginTop: 10,
+    marginBottom: 10,
   },
 
   description: {
     fontSize: 15,
-    lineHeight: 22,
-    color: "#475569",
+    lineHeight: 24,
+    color: "#64748b",
+    marginBottom: 14,
   },
 
   discount: {
-    fontSize: 16,
-    color: "#502ebf",
+    alignSelf: "flex-start",
+    fontSize: 14,
+    color: "#dc0303",
     fontWeight: "bold",
-    marginBottom: 20,
+    backgroundColor: "#eef2ff",
+    paddingHorizontal: 12,
+    paddingVertical: 7,
+    borderRadius: 8,
+    marginBottom: 14,
+  },
+
+  infoText: {
+    fontSize: 15,
+    color: "#475569",
+    marginBottom: 8,
   },
 
   reviewCard: {
-  padding: 15,
-  marginBottom: 10,
-  marginTop: 10,
-  backgroundColor: "#f8fafc",
-  borderRadius: 10,
+    backgroundColor: "#ffffff",
+    padding: 16,
+    marginBottom: 30,
+    borderRadius: 14,
 
-  shadowColor: "#000",
-  shadowOffset: {
-    width: 0,
-    height: 2,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.06,
+    shadowRadius: 6,
+    elevation: 3,
   },
-  shadowOpacity: 0.1,
-  shadowRadius: 5,
-  elevation: 3,
 
+  reviewerName: {
+    fontSize: 16,
+    fontWeight: "700",
+    color: "#172033",
+    marginBottom: 5,
+  },
 
+  reviewRating: {
+    fontSize: 14,
+    marginBottom: 8,
+  },
 
+  reviewComment: {
+    fontSize: 15,
+    color: "#475569",
+    lineHeight: 21,
+    marginBottom: 10,
+  },
 
-},
+  reviewEmail: {
+    fontSize: 12,
+    color: "#94a3b8",
+    marginBottom: 3,
+  },
+
+  reviewDate: {
+    fontSize: 12,
+    color: "#94a3b8",
+  },
 });
